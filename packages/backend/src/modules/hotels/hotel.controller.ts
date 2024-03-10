@@ -6,6 +6,8 @@ class HotelController {
 
 		try {
 
+			console.log(req.body);
+
 			const spotsAvailable = await SearchHotelQuery.execute(req.body);
 
 			res.status(200).json(spotsAvailable);
