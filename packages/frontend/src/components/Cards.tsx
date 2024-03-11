@@ -1,36 +1,58 @@
 import React from 'react';
+import Image from 'next/image'
 
 interface ICardProps {
 	data: any
 }
+
+interface CardImageProps {
+	image: string;
+}
+const CardImage: React.FC<CardImageProps> = ({ image }) => {
+	return <div className="w-1/4">
+		<div className="aspect-w-16 aspect-h-9 ">
+			<Image
+
+				src={image}
+				alt="car"
+				width={200}
+				height={200}
+
+			/>
+		</div>
+	</div>
+}
 const Cards: React.FC<ICardProps> = ({ data }) => {
-	const { price, title, seats, gearshift, saleOff } = data
+	const { price, title, seats, gearshift, saleOff } = data;
 
 	return (
-		<div
-			className="group relative border border-neutral-200 dark:border-neutral-700 rounded-3xl overflow-hidden bg-white dark:bg-neutral-900">
-			<div className={"p-5  space-y-4"}>
-				<div className="space-y-2">
-					<div className="flex items-center space-x-2">
-						<h2 className={`  capitalize text-xl font-semibold`}>
-							<span className="line-clamp-1">{title}</span>
-						</h2>
+		<div className="cards">
+			<div className={'p-5 flex flex-row'}>
+				<CardImage image={'https://assets.holidaytaxis.com/imgs/default/vehicle_set/shuttle1min3.jpg'} />
+
+				<div className="px-5 w-full">
+					<div>
+						<div className="flex items-center space-x-2">
+							<h2 className={`capitalize text-xl font-semibold`}>
+								<span className="line-clamp-1">{title}</span>
+							</h2>
+						</div>
+
+						<div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
+							<span className="">{seats} seats</span>
+							<span>-</span>
+							<span className="">{gearshift} </span>
+						</div>
 					</div>
 
-					<div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
-						<span className="">{seats} seats</span>
-						<span>-</span>
-						<span className="">{gearshift} </span>
-					</div>
-				</div>
+					<div className="w-14  border-b border-neutral-100 dark:border-neutral-800"></div>
 
-				<div className="w-14  border-b border-neutral-100 dark:border-neutral-800"></div>
-
-				<div className="flex justify-between items-center">
+					<div className="flex justify-between items-center">
 				<span className="text-base font-semibold">
 					{price}{` `}
 					<span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">/day</span>
 				</span>
+					</div>
 				</div>
 			</div>
 

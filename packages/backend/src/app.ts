@@ -3,6 +3,7 @@ import logger from 'morgan';
 import express, { NextFunction, Request, Response } from 'express';
 
 import hotelsRoutes from './modules/hotels/hotel.routes';
+import countriesRoutes from './modules/countries/countries.routes';
 
 const app = express();
 
@@ -14,7 +15,8 @@ app.get('/', (req: Request, res: Response) => {
 	res.send('Express + TypeScript Server');
 });
 
-app.use('/hotels', hotelsRoutes);
+//app.use('/hotels', hotelsRoutes);
+app.use('/countries', countriesRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	//console.error(err);

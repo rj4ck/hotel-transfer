@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input } from '@/assets/style';
+import { Input } from '@/styles/style';
 
 interface IFilterDateProps {
 	endDate: Date

@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Dropdown } from '@/assets/style';
+import { Dropdown } from '@/styles/style';
 import InputNumber from '@/components/InputNumber';
 import ArrowDownIcon from '@/components/Icons/ArrowIcon';
 import { Popover, Transition } from '@headlessui/react';
@@ -31,19 +31,19 @@ const GuestsInput = () => {
 		}
 	};
 
-	return <Popover className={'flex flex-1 relative'}>
+	return <Popover className={'container'}>
 		{({ open }) => (
-			<div className={'flex-1 z-10 flex items-center focus:outline-none'}>
-				<Dropdown.Button>
-					<Dropdown.Title>
-						<span className="block xl:text-lg font-semibold">
+			<div className={'filter-item'}>
+				<Dropdown.Button className={'button-wrapper'}>
+					<div className={'filter-resume'}>
+						<span className="filter-title">
 							{totalGuests || ''} Guests
 						</span>
 
-						<Dropdown.Subtitle>
-							{totalGuests ? "Guests" : "Add guests"}
-						</Dropdown.Subtitle>
-					</Dropdown.Title>
+						<span className={'filter-description'}>
+							{totalGuests ? 'Guests' : 'Add guests'}
+						</span>
+					</div>
 
 					<ArrowDownIcon direction={open ? 'up' : 'down'}/>
 
