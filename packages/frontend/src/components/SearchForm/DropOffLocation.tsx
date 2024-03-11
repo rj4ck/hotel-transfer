@@ -1,7 +1,7 @@
 import React from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import ArrowDownIcon from '@/components/Icons/ArrowIcon';
-import { DropOffTypes } from '@/lib/entities';
+import { DropOffTypes } from '@/entities';
 
 interface Options {
 	label: string;

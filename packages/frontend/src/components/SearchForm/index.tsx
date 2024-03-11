@@ -3,7 +3,7 @@ import { Divider } from '@/styles/style';
 import GuestsInput from '@/components/SearchForm/GuestsInput';
 import React from 'react';
 import DropOffLocation from '@/components/SearchForm/DropOffLocation';
-import { DropOffTypes } from '@/lib/entities';
+import { DropOffTypes } from '@/entities';
 import LocationsInput from '@/components/SearchForm/LocationsInput';
 import SearchButton from '@/components/SearchForm/SearchButton';
 

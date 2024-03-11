@@ -29,6 +29,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
 			return state - 1;
 		});
 
+		// @ts-ignore
 		onChange && onChange(value - 1);
 	};
 	const handleIncrement = () => {
@@ -38,6 +39,7 @@ const InputNumber: React.FC<InputNumberProps> = ({
 			return state + 1;
 		});
 
+		// @ts-ignore
 		onChange && onChange(value + 1);
 	};
 

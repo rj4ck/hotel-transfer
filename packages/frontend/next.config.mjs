@@ -2,10 +2,8 @@ import nextTranslate from 'next-translate-plugin';
 
 /** @type {import('next').NextConfig} */
 
-export default nextTranslate({
-	webpack: (config, { isServer, webpack }) => {
-		return config;
-	},
+export default {
+	distDir: '../backend/src/.next',
 	images: {
 		remotePatterns: [
 			{
@@ -15,4 +13,4 @@ export default nextTranslate({
 			},
 		],
 	},
-});
+};

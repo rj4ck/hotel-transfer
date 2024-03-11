@@ -6,7 +6,7 @@ import { Divider, Section } from '@/styles/style';
 import RangeDateInput from '@/components/SearchForm/RangeDateInput';
 import GuestsInput from '@/components/SearchForm/GuestsInput';
 import SearchButton from '@/components/SearchForm/SearchButton';
-import useHotels from '@/lib/hooks/useHotels';
+import useHotels from '@/hooks/useHotels';
 import Cards from '@/components/Cards';
 import SearchForm from '@/components/SearchForm'
 

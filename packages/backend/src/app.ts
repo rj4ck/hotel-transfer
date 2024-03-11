@@ -1,9 +1,9 @@
 import cors from 'cors';
+import path from 'path';
 import logger from 'morgan';
 import express, { NextFunction, Request, Response } from 'express';
 
-import hotelsRoutes from './modules/hotels/hotel.routes';
-import countriesRoutes from './modules/countries/countries.routes';
+import apiRoutes from './modules/routes';
 
 const app = express();
 
@@ -11,12 +11,15 @@ app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));
 
-app.get('/', (req: Request, res: Response) => {
-	res.send('Express + TypeScript Server');
-});
+app.use(express.static(path.join(__dirname, '_next')));
 
-//app.use('/hotels', hotelsRoutes);
-app.use('/countries', countriesRoutes);
+app.use('/api', apiRoutes);
+
+console.log(__dirname);
+
+app.get('/', (req: Request, res: Response) => {
+	res.sendFile(path.join(__dirname, '.next/server/app/index.html'));
+});
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	//console.error(err);

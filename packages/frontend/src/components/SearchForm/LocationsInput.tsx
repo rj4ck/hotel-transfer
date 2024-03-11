@@ -14,7 +14,7 @@ const people = [
 	{ id: 5, name: 'Tanya Fox' },
 	{ id: 6, name: 'Hellen Schmidt' },
 ];
-const LocationsInput: React.FC<LocationInputProps> = ({ description, placeholder }) => {
+const LocationsInput: React.FC<LocationInputProps> = ({ placeholder }) => {
 
 	const [selected, setSelected] = React.useState('');
 	const [query, setQuery] = React.useState('');
@@ -35,7 +35,7 @@ const LocationsInput: React.FC<LocationInputProps> = ({ description, placeholder
 				<Combobox.Button>
 					<div className={'filter-resume'}>
 						<span className={'filter-title'}>
-							<Combobox.Input placeholder={placeholder} displayValue={(person) => person.name}
+							<Combobox.Input placeholder={placeholder} displayValue={(person: any) => person.name}
 											onChange={(event) => setQuery(event.target.value)}/>
 						</span>
 					</div>
