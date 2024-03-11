@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 interface IBaseConfig {
     env: string;
     port: number;

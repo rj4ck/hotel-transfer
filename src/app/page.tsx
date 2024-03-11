@@ -1,18 +1,11 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
-import { Divider, Section } from '@/styles/style';
-import RangeDateInput from '@/components/SearchForm/RangeDateInput';
-import GuestsInput from '@/components/SearchForm/GuestsInput';
-import SearchButton from '@/components/SearchForm/SearchButton';
-import useHotels from '@/hooks/useHotels';
+import { Section } from '@/styles/style';
 import Cards from '@/components/Cards';
 import SearchForm from '@/components/SearchForm'
 
 export default function Home() {
-
-	const { fetchHotels } = useHotels();
 
 	const [data] = React.useState([
 		{ id: 2, title: 'Pruebas', seats: 4, price: 120, saleOff: true },

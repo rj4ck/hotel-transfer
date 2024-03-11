@@ -1,5 +1,5 @@
-import httpsRequest from '../../../utils/httpsRequest';
-import { ISearchHotelQuery, ISearchHotelResponse } from '../../../entities/hotels.entity';
+import httpsRequest from '@/utils/httpsRequest';
+import { ISearchHotelQuery, ISearchHotelResponse } from '../../../server/entities/hotels.entity';
 
 class SearchHotelQuery {
 	public static async execute (parameters: ISearchHotelQuery) {
