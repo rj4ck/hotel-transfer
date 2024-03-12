@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Section } from '@/styles/style';
-import Cards from '@/components/Cards';
-import SearchForm from '@/components/SearchForm'
+import { Section } from '@/app/styles/style';
+import Cards from '@/app/components/Cards';
+import SearchForm from '@/app/components/SearchForm'
 
 export default function Home() {
 

@@ -1,12 +1,12 @@
 import express from 'express';
-import countriesRoutes from './countries/countries.routes';
-import terminalsRoutes from './terminals/terminals.routes';
+import locationsRoutes from './locations/locations.routes';
+import searchAvailability from './search-availability/search-availability.routes';
 
 const api = express();
 
 //app.use('/hotels', hotelsRoutes);
-api.use('/countries', countriesRoutes);
-api.use('/terminals', terminalsRoutes);
+api.use('/search', searchAvailability);
+api.use('/locations', locationsRoutes);
 
 api.get('/status', (req, res) => {
 	res.status(200).json({ message: 'I am alive' });
