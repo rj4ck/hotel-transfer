@@ -1,0 +1,23 @@
+import { Request, Response, NextFunction } from 'express';
+import ListTerminalsQuery from './queries/list-terminals.query';
+
+class TerminalsController {
+    public static async search(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {
+            const payload = {
+                fields: 'ALL',
+                language: 'es'
+            }
+
+            const countries = await ListTerminalsQuery.execute(payload);
+
+            res.status(200).json(countries);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+}
+
+export default TerminalsController;

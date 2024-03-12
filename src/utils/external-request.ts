@@ -9,11 +9,9 @@ const createApiClient = (domain: string, headers: Record<string, unknown>) => {
 
 	api.interceptors.request.use(
 		config => {
-			console.log('=====', config)
 			return config;
 		},
 		error => {
-			console.log('=====', error)
 			return Promise.reject(error);
 		},
 	);

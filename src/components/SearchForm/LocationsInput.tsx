@@ -1,42 +1,38 @@
 import React from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import ArrowDownIcon from '@/components/Icons/ArrowIcon';
+import useTransfers from "@/hooks/useTransfers";
+import { ICountries } from "@/dto/countries.dtos";
 
 interface LocationInputProps {
 	placeholder: string;
 }
-
-const people = [
-	{ id: 1, name: 'Wade Cooper' },
-	{ id: 2, name: 'Arlene Mccoy' },
-	{ id: 3, name: 'Devon Webb' },
-	{ id: 4, name: 'Tom Cook' },
-	{ id: 5, name: 'Tanya Fox' },
-	{ id: 6, name: 'Hellen Schmidt' },
-];
 const LocationsInput: React.FC<LocationInputProps> = ({ placeholder }) => {
+
+	const { isLoading, countriesList } = useTransfers()
 
 	const [selected, setSelected] = React.useState('');
 	const [query, setQuery] = React.useState('');
 
-	const filteredPeople =
+	const filteredLocation =
 		query === ''
-			? people
-			: people.filter((person) =>
-				person.name
+			? countriesList
+			: countriesList.filter((country) =>
+				country.name
 					.toLowerCase()
 					.replace(/\s+/g, '')
 					.includes(query.toLowerCase().replace(/\s+/g, ''))
 			);
 
 	return <div className="popover-main">
-		<Combobox value={selected} onChange={setSelected}>
+		{!isLoading && <Combobox value={selected} onChange={setSelected}>
 			<div className="popover-button-wrapper">
 				<Combobox.Button>
 					<div className={'filter-resume'}>
 						<span className={'filter-title'}>
-							<Combobox.Input placeholder={placeholder} displayValue={(person: any) => person.name}
-											onChange={(event) => setQuery(event.target.value)}/>
+							<Combobox.Input placeholder={placeholder}
+											displayValue={(location: ICountries) => location.name}
+											onChange={(event) => setQuery(event.target.value)} />
 						</span>
 					</div>
 
@@ -57,20 +53,20 @@ const LocationsInput: React.FC<LocationInputProps> = ({ placeholder }) => {
 				>
 					<Combobox.Options
 						className="popover-wrapper">
-						{filteredPeople.length === 0 && query !== '' ? (
+						{filteredLocation.length === 0 && query !== '' ? (
 							<div className="relative cursor-default select-none px-4 py-2 text-gray-700">
 								Nothing found.
 							</div>
 						) : (
-							filteredPeople.map((person) => (
+							filteredLocation.map((location) => (
 								<Combobox.Option
-									key={person.id}
+									key={location.code}
 									className={({ active }) =>
 										`popover-item ${
 											active && 'bg-orange-500 text-white'
 										}`
 									}
-									value={person}
+									value={location}
 								>
 									{({ selected, active }) => (
 										<>
@@ -79,7 +75,7 @@ const LocationsInput: React.FC<LocationInputProps> = ({ placeholder }) => {
 													selected ? 'font-medium' : 'font-normal'
 												}`}
 											>
-												{person.name}
+												{location.name}
 											</span>
 
 											{selected ? (
@@ -98,7 +94,7 @@ const LocationsInput: React.FC<LocationInputProps> = ({ placeholder }) => {
 					</Combobox.Options>
 				</Transition>
 			</div>
-		</Combobox>
+		</Combobox>}
 	</div>;
 };
 

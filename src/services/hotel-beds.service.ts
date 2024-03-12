@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 import { hotelBeds, HTTP_REQUEST } from '../configs';
-import createApiClient from '../utils/httpsRequest';
+import createApiClient from '../utils/external-request';
 
 const { transferUrl, transferApi, transferCacheUrl } = hotelBeds;
 
@@ -19,6 +19,7 @@ class HotelBedsService {
 
     }
 
+    public static transfer = createApiClient(transferUrl, this.generateHeaders(transferApi))
     public static miscellaneous = createApiClient(transferCacheUrl, this.generateHeaders(transferApi))
 }
 
