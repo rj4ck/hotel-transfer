@@ -1,4 +1,8 @@
-type HTTP_REQUEST = {
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+export type HTTP_REQUEST = {
 	apiKey: string;
     apiSecret: string;
 }

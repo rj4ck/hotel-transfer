@@ -9,10 +9,11 @@ const createApiClient = (domain: string, headers: Record<string, unknown>) => {
 
 	api.interceptors.request.use(
 		config => {
-			console.log(config)
+			console.log('=====', config)
 			return config;
 		},
 		error => {
+			console.log('=====', error)
 			return Promise.reject(error);
 		},
 	);
@@ -23,17 +24,17 @@ const createApiClient = (domain: string, headers: Record<string, unknown>) => {
 		},
 		error => {
 			const axiosError = error as AxiosError;
-	
+
 			if (axiosError.response) {
 				const responseData: unknown = axiosError.response?.data;
-	
+
 				return Promise.reject(responseData);
 			} else if (error.request) {
 				console.error('No se recibió respuesta del servidor:', error.request);
 			} else {
 				console.error('Error al realizar la solicitud:', error.message);
 			}
-	
+
 			return Promise.reject(error);
 		},
 	);

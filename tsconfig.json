@@ -10,7 +10,9 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "target": "esnext",
     "module": "commonjs",
+    //"module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -32,11 +34,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../backend/src/public/.next/types/**/*.ts",
-    "../backend/src/public//types/**/*.ts",
-    "dist/types/**/*.ts",
-    "build/types/**/*.ts",
-    "../backend/src/.next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

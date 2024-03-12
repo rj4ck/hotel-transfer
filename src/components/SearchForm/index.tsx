@@ -14,6 +14,12 @@ const SearchForm = () => {
 		setDropOffLocationType(type)
 	}
 
+	React.useEffect(() => {
+		const data = fetch('/api/countries')
+
+		console.log(data)
+	})
+
 	return <div className={'search-form-wrapper'}>
 		<form>
 			<DropOffLocation onChange={handleDropOffType} value={dropOffLocationType} />

@@ -1,2 +1,2 @@
 export * from './base.config';
-export * from './hotelBeds.config';
+export * from './hotel-beds.config';
