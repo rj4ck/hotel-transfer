@@ -1,6 +1,4 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { getRequiredEnvVariable } from "../utils/get-required-env-variables";
 
 export type HTTP_REQUEST = {
 	apiKey: string;
@@ -13,16 +11,6 @@ interface IHotelBedsConfig {
 	hotelApi: HTTP_REQUEST;
     transferApi: HTTP_REQUEST;
 }
-
-const getRequiredEnvVariable = (name: string): string => {
-	const value = process.env[name];
-
-	if (!value) {
-		throw new Error(`The environment variable ${name} is not defined.`);
-	}
-
-	return value;
-};
 
 const HOTEL_BEDS_DOMAIN = getRequiredEnvVariable('HOTEL_BEDS_DOMAIN');
 const HOTEL_BEDS_VERSION = getRequiredEnvVariable('HOTEL_BEDS_VERSION');

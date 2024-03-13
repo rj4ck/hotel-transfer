@@ -3,6 +3,6 @@ import SearchAvailabilityController from './search-availability.controller';
 
 const router = express.Router();
 
-router.get('/', SearchAvailabilityController.search);
+router.post('/', SearchAvailabilityController.search);
 
 export default router;

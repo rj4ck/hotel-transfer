@@ -112,10 +112,7 @@
 
 		.drop-off-location {
 			@apply flex
-			p-3
-			border-b
-			border-neutral-100
-			dark:border-neutral-700;
+			p-3;
 
 			> div {
 				//@apply relative inline-block

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu } from '@headlessui/react';
 import ArrowDownIcon from '@/app/components/Icons/ArrowIcon';
 import { DropOffTypes } from '@/entities';
+import Transition from "@/app/components/Transition";
 
 interface Options {
 	label: string;
@@ -30,15 +31,7 @@ const DropOffLocation: React.FC<IDropOffLocationProps> = ({ value, onChange }) =
 					</Menu.Button>
 				</div>
 
-				<Transition
-					as={React.Fragment}
-					enter="transition ease-out duration-100"
-					enterFrom="transform opacity-0 scale-95"
-					enterTo="transform opacity-100 scale-100"
-					leave="transition ease-in duration-75"
-					leaveFrom="transform opacity-100 scale-100"
-					leaveTo="transform opacity-0 scale-95"
-				>
+				<Transition>
 					<Menu.Items className="dropdown-options">
 
 						<div className="p-3">

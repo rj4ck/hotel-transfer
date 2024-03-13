@@ -1,12 +1,14 @@
 import HotelBedsService from "../../../services/hotel-beds.service";
-import { ISearchAvailability } from "../../../entities/search-availability.entity";
+import { IServiceAvailableRequest, IServiceAvailableResponse } from "../../../entities/services-availability.entity";
 
 class SearchAvailabilityQuery {
-    public static execute (parameters: ISearchAvailability) {
+    public static async execute (parameters: IServiceAvailableRequest) {
 
         const pathVariables = `${parameters.language}/from/${parameters.fromType}/${parameters.fromCode}/to/${parameters.toType}/${parameters.toCode}/${parameters.outbound}${parameters.inbound ? `/${parameters.inbound}` : ''}/${parameters.adults}/${parameters.children}/${parameters.infants}`
 
-        return HotelBedsService.transfer(`/availability/${pathVariables}`);
+        const { services } = await HotelBedsService.transfer(`/availability/${pathVariables}`) as IServiceAvailableResponse;
+
+        return services;
     }
 }
 

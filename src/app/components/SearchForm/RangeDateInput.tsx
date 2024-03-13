@@ -1,61 +1,57 @@
 "use client";
 
-import React from 'react';
-import moment from 'moment';
+import React, { useCallback } from 'react';
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Dropdown from '@/app/components/Dropdown';
-
-interface GuestsObject {
-	guestAdults?: number;
-	guestChildren?: number;
-}
+import { useHotelTransfer } from "@/app/hooks/useTransfers";
 
 interface TitleProps {
-	endDate: null | Date;
-	startDate: null | Date;
+	returnDate: Date;
+	departureDate: Date;
 }
-const Title: React.FC<TitleProps> = ({ startDate, endDate }) => {
 
-	const formatDate = (date: null | Date, alterText: string) => {
-		return date?.toLocaleDateString('EU', {
+// eslint-disable-next-line react/display-name
+const Title: React.FC<TitleProps> = React.memo(({ returnDate, departureDate }) => {
+	const formatDate = useCallback((date: Date | null, alterText: string) => {
+		return date ? date.toLocaleDateString('EU', {
 			month: 'short',
 			day: '2-digit',
-		}) || alterText
-	}
+		}) : alterText;
+	}, []);
 
 	return (
 		<span className="filter-title">
-			{formatDate(startDate, 'Add dates')}
-			{endDate && ` - ${formatDate(endDate, '')}`}
-		</span>
-	)
-}
-const GuestsInput = () => {
-	const [startDate, setStartDate] = React.useState<Date | null>(
-		moment().toDate()
+            {formatDate(departureDate, 'Add dates')}
+			{returnDate && ` - ${formatDate(returnDate, '')}`}
+        </span>
 	);
-	const [endDate, setEndDate] = React.useState<Date | null>(moment().add(1, 'days').toDate());
+});
 
-	const onChangeDate = (dates: [Date | null, Date | null]) => {
+const GuestsInput: React.FC = () => {
+	const { returnDate, departureDate, handleReturnDate, handleDepartureDate } = useHotelTransfer();
+
+	const onChangeDate = useCallback((dates: [Date, Date]) => {
 		const [start, end] = dates;
-		setStartDate(start);
-		setEndDate(end);
-	};
+		handleReturnDate(end);
+		handleDepartureDate(start);
+	}, [handleReturnDate, handleDepartureDate]);
 
-	return <Dropdown title={Title({ startDate, endDate })} className={'right-0'}>
-		<DatePicker
-			selected={startDate}
-			onChange={onChangeDate}
-			startDate={startDate}
-			endDate={endDate}
-			selectsRange
-			monthsShown={2}
-			showPopperArrow={false}
-			inline
-		/>
-	</Dropdown>;
+	return (
+		<Dropdown title={<Title departureDate={departureDate} returnDate={returnDate} />} className={'right-0'}>
+			<DatePicker
+				selected={departureDate}
+				onChange={onChangeDate}
+				startDate={departureDate}
+				endDate={returnDate}
+				selectsRange
+				monthsShown={2}
+				showPopperArrow={false}
+				inline
+			/>
+		</Dropdown>
+	);
 };
 
-export default GuestsInput;
+export default React.memo(GuestsInput);

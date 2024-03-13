@@ -9,11 +9,11 @@ interface LocationInputProps {
 	type: 'pickup' | 'drop-off',
 	placeholder: string;
 }
-const LocationsInput: React.FC<LocationInputProps> = ({ type, placeholder }) => {
+const CountriesPicker: React.FC<LocationInputProps> = ({ type, placeholder }) => {
 
-	const { isLoading, countriesList } = useHotelTransfer()
+	const { isLoading, currentUser, countriesList } = useHotelTransfer()
 
-	const [selected, setSelected] = React.useState('');
+	const [selected, setSelected] = React.useState(currentUser?.homeLocation.country);
 	const [query, setQuery] = React.useState('');
 
 	const filteredLocation =
@@ -32,7 +32,7 @@ const LocationsInput: React.FC<LocationInputProps> = ({ type, placeholder }) => 
 				<Combobox.Button>
 					<div className={'filter-resume'}>
 						<span className={'filter-title'}>
-							<Combobox.Input placeholder={placeholder}
+							<Combobox.Input placeholder={'Country'}
 											displayValue={(location: ICountries) => location.name}
 											onChange={(event) => setQuery(event.target.value)} />
 						</span>
@@ -44,8 +44,7 @@ const LocationsInput: React.FC<LocationInputProps> = ({ type, placeholder }) => 
 				</Combobox.Button>
 
 				<Transition>
-					<Combobox.Options
-						className="popover-wrapper">
+					<Combobox.Options className="popover-wrapper overflow-auto">
 						{filteredLocation.length === 0 && query !== '' ? (
 							<div className="relative cursor-default select-none px-4 py-2 text-gray-700">
 								Nothing found.
@@ -91,4 +90,4 @@ const LocationsInput: React.FC<LocationInputProps> = ({ type, placeholder }) => 
 	</div>;
 };
 
-export default LocationsInput;
+export default CountriesPicker;

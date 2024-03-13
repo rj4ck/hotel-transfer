@@ -23,6 +23,22 @@ class LocationsController {
             next(error);
         }
     }
+    public static async fetchCountries(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {
+            const payload = {
+                fields: 'ALL',
+                language: 'es'
+            }
+
+            const countries = await ListCountriesQuery.execute(payload);
+
+            res.status(200).json(countries);
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default LocationsController;
