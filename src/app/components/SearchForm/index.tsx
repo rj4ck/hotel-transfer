@@ -1,38 +1,79 @@
 import React from 'react';
-import DropOffLocation from '@/app/components/SearchForm/DropOffLocation';
-import { DropOffTypes } from '@/entities';
-import LocationsInput from '@/app/components/SearchForm/LocationsInput';
-import SearchButton from '@/app/components/SearchForm/SearchButton';
-import Countries from "@/app/components/SearchForm/Countries";
-import RangeDateInput from "@/app/components/SearchForm/RangeDateInput";
+import AutocompleteCombobox from "@/app/components/AutocompleteCombobox";
+import { useHotelTransfer } from "@/app/hooks/useTransfers";
+import countriesList from '@/utils/countries.json'
+import tripTypesList from '@/utils/trip-types.json'
+import GuestsInput from "@/app/components/SearchForm/GuestsInput";
+import SearchButton from "@/app/components/SearchForm/SearchButton";
+import DatePicker from "@/app/components/DatePickerInput";
 
 const SearchForm = () => {
-	const [dropOffLocationType, setDropOffLocationType] = React.useState<DropOffTypes>("different")
+	const {
+		isLoading,
+		isLoadingHotels,
+		isLoadingLocations,
+		departureDate,
+		returnDate,
+		hotelsByCityList,
+		citiesByCountryList,
+		airportTerminalList,
 
-	const handleDropOffType = (type: DropOffTypes) => {
-		setDropOffLocationType(type)
-	}
+		tripType,
+		citySelected,
+		hotelSelected,
+		countrySelected,
+		airportSelected,
 
-	return <div className={'search-form-wrapper'}>
-		<form>
-			<div className={'flex flex-row border-b border-neutral-700 justify-between'}>
-				<DropOffLocation onChange={handleDropOffType} value={dropOffLocationType} />
-				{/*<Countries  />*/}
-			</div>
+		handleTripType,
+		handleReturnDate,
+		handleCitySelected,
+		handleHotelSelected,
+		handleDepartureDate,
+		handleCountrySelected,
+		handleAirportSelected,
+		fetchServiceAvailable
+	} = useHotelTransfer()
 
-			<div className={'filters'}>
-				<LocationsInput type={'pickup'} placeholder={'Pick up location'} />
-				{dropOffLocationType === 'different' && (
-					<React.Fragment>
-						<LocationsInput type={'drop-off'} placeholder={'Drop off location'} />
-					</React.Fragment>
-				)}
-				<RangeDateInput />
+	const countriesOptions = countriesList.map(country => ({ value: country.code, label: country.name }));
+	const airportTerminalsOptions = airportTerminalList
+		? airportTerminalList.map(airport => ({
+			value: airport.code,
+			label: airport.content.description
+		}))
+		: [];
 
-				<SearchButton />
-			</div>
-		</form>
+	const citiesOptions = citiesByCountryList
+		? citiesByCountryList.map(city => ({
+			value: city.code,
+			label: city.name
+		}))
+		: [];
 
+	const hotelsOptions = hotelsByCityList
+		? hotelsByCityList.map(hotel => ({
+			value: hotel.code,
+			label: hotel.name
+		}))
+		: [];
+
+	return <div className="h-screen text-white p-6">
+		<AutocompleteCombobox label={'Type of trip'} value={tripType} options={tripTypesList} placeholder={'Trip'} onChange={handleTripType} isLoading={false} />
+
+		<DatePicker date={departureDate} label={'Arrival date'} onChange={handleDepartureDate} />
+
+		<GuestsInput />
+
+		{tripType.value === 'round' && <DatePicker date={returnDate} label={'Return date'} onChange={handleReturnDate} />}
+
+		<AutocompleteCombobox label={'Country'} value={countrySelected} options={countriesOptions} placeholder={'Country'} onChange={handleCountrySelected} isLoading={isLoading} />
+
+		{countrySelected && <AutocompleteCombobox label={'Airport'} value={airportSelected} options={airportTerminalsOptions} placeholder={'Airport terminal'} onChange={handleAirportSelected} isLoading={isLoadingLocations} /> }
+
+		{airportSelected && <AutocompleteCombobox label={'City'} value={citySelected} options={citiesOptions} placeholder={'City'} onChange={handleCitySelected} isLoading={isLoadingLocations} /> }
+
+		{citySelected && <AutocompleteCombobox label={'Hotels'} value={hotelSelected} options={hotelsOptions} placeholder={'Hotel'} onChange={handleHotelSelected} isLoading={isLoadingHotels} /> }
+
+		{hotelSelected && <SearchButton disabled={!hotelSelected} onClick={fetchServiceAvailable}/>}
 	</div>
 }
 

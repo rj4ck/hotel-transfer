@@ -7,7 +7,7 @@ interface IPriceAmountProp {
 }
 
 const PriceAmount: React.FC<IPriceAmountProp> = ({ amount, currencyCode }) => {
-    const userLanguage = navigator.language;
+        const userLanguage = navigator.language;
 
     const priceFormat = new Intl.NumberFormat(userLanguage, { style: 'currency', currency: currencyCode }).format(
         amount,

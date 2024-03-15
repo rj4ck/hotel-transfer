@@ -5,19 +5,10 @@ import { IServiceAvailableRequest } from "@/entities/services-availability.entit
 class SearchAvailabilityController {
     public static async search(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-        const { toCode, toType, fromCode, fromType } = req.body
-
         try {
             const payload: IServiceAvailableRequest = {
-                adults: 2,
-                infants: 0,
-                children: 0,
+                ...req.body,
                 language: 'en',
-                toType,
-                toCode,
-                fromType,
-                fromCode,
-                outbound: '2024-03-20T12:00:00',
             }
 
             const servicesAvailable = await SearchAvailabilityQuery.execute(payload);

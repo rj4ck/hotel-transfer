@@ -1,29 +1,52 @@
 import React from "react";
 import { IUser } from "@/dto/user.dtos";
-import { DropOffTypes } from "@/entities";
-import { ICountries, ILocation } from "@/dto/locations.dtos";
+import tripTypesList from '@/utils/trip-types.json'
+import { DropOffTypes, IMenuOptions } from "@/entities";
+import { IAirportTerminals, ICities, IHotels } from "@/dto/locations.dtos";
 import { IServicesAvailable } from "@/dto/services-available.dtos";
 import { getCookie, setCookie } from "@/utils/browser-cookie-manager";
+import { stringDateFormat } from "@/utils/formatter-date";
 
 interface HotelTransferProps {
     isLoading: boolean;
+    isLoadingHotels: boolean;
+    isLoadingServices: boolean;
+    isLoadingLocations: boolean;
+
     currentUser?: IUser;
-    fromLocation?: ILocation;
-    countriesList?: ICountries[];
+
+    citySelected?: IMenuOptions;
+    hotelSelected?: IMenuOptions;
+    countrySelected?: IMenuOptions;
+    airportSelected?: IMenuOptions;
+
+    //toLocation?: string;
     servicesAvailable?: IServicesAvailable[]
-    handleReturnDate: (date: Date) => void
-    handleDepartureDate: (date: Date) => void
-    handleToLocation: (location: ILocation) => void
-    handleFromLocation: (location: ILocation) => void
-    handleDropOffType: (type: DropOffTypes) => void
-    adultsNumber?: number;
-    infantsNumber?: number;
-    childrenNumber?: number;
+
+    adultsNumber: number;
+    infantsNumber: number;
+    childrenNumber: number;
     returnDate: Date;
     departureDate: Date;
+
+    tripType: IMenuOptions;
+    hotelsByCityList: IHotels[];
+    citiesByCountryList: ICities[];
+    airportTerminalList: IAirportTerminals[];
+
+    handleTripType: (type: IMenuOptions) => void
+    handleCitySelected: (city: IMenuOptions) => void
+    handleHotelSelected: (city: IMenuOptions) => void
+    handleCountrySelected: (country: IMenuOptions) => void;
+    handleAirportSelected: (airport: IMenuOptions) => void
+
+    handleReturnDate: (date: Date) => void
+    handleDepartureDate: (date: Date) => void
+
     handleAdultsNumber: (number: number) => void;
     handleInfantsNumber: (number: number) => void;
     handleChildrenNumber: (number: number) => void;
+    fetchServiceAvailable: () => void;
 }
 
 interface HotelTransferProviderProps {
@@ -32,58 +55,94 @@ interface HotelTransferProviderProps {
 
 const MyContext = React.createContext<HotelTransferProps>({
     isLoading: false,
+    isLoadingHotels: false,
+    isLoadingServices: false,
+    isLoadingLocations: false,
+    //countrySelected,
+    //airportSelected,
+    tripType: tripTypesList[0],
+    adultsNumber: 2,
+    infantsNumber: 0,
+    childrenNumber: 0,
+
+    hotelsByCityList: [],
+    citiesByCountryList: [],
+    airportTerminalList: [],
+
     returnDate: new Date(),
     departureDate: new Date(),
-    countriesList: [],
     servicesAvailable: [],
+    //destinationList: [],
     handleReturnDate: () => {},
     handleDepartureDate: () => {},
-    handleToLocation: () => {},
-    handleFromLocation: () => {},
-    handleDropOffType: () => {},
+
+    handleTripType: () => {},
+    handleCitySelected: () => {},
+    handleHotelSelected: () => {},
+    handleCountrySelected: () => {},
+    handleAirportSelected: () => {},
+
     handleAdultsNumber: () => {},
     handleInfantsNumber: () => {},
     handleChildrenNumber: () => {},
+    fetchServiceAvailable: () => {}
 });
 
 const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children }) => {
     const currentDate = new Date();
 
     const nextDay = new Date(currentDate);
-    nextDay.setDate(currentDate.getDate() + 1);
+    nextDay.setDate(currentDate.getDate() + 2);
 
     const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const [isLoadingHotels, setIsLoadingHotels] = React.useState<boolean>(false)
+    const [isLoadingLocations, setIsLoadingLocations] = React.useState<boolean>(false)
+    const [isLoadingServices, setIsLoadingServices] = React.useState<boolean>(false)
+
+    const [currentUser, setCurrentUser] = React.useState<IUser>()
+
+    const [tripType, setTripType] = React.useState<IMenuOptions>(tripTypesList[0])
+    const [citySelected, setCitySelected] = React.useState<IMenuOptions>()
+    const [hotelSelected, setHotelSelected] = React.useState<IMenuOptions>()
+    const [countrySelected, setCountrySelected] = React.useState<IMenuOptions>()
+    const [airportSelected, setAirportSelected] = React.useState<IMenuOptions>()
+
+    const [hotelsByCityList, setHotelsByCityList] = React.useState<IHotels[]>([])
+    const [citiesByCountryList, setCitiesByCountryList] = React.useState<ICities[]>([])
+    const [airportTerminalList, setAirportTerminals] = React.useState<IAirportTerminals[]>([])
 
     const [returnDate, setReturnDate] = React.useState<Date>(nextDay)
-    const [currentUser, setCurrentUser] = React.useState<IUser>()
-    const [departureDate, setDepartureDate] = React.useState<Date>(currentDate)
-    const [toLocation, setToLocation] = React.useState<ILocation>()
-    const [fromLocation, setFromLocation] = React.useState<ILocation>()
-    const [countriesList, setCountriesList] = React.useState<ICountries[]>([])
-    const [dropOffType, setDropOffType] = React.useState<DropOffTypes>('same')
-    const [servicesAvailable, setServicesAvailable] = React.useState<IServicesAvailable[]>([])
+    const [departureDate, setDepartureDate] = React.useState<Date>(nextDay)
+
+    const [servicesAvailable, setServicesAvailable] = React.useState<IServicesAvailable[]>()
 
     const [adultsNumber, setAdultsNumber] = React.useState<number>(2)
     const [infantsNumber, setInfantsNumber] = React.useState<number>(0)
     const [childrenNumber, setChildrenNumber] = React.useState<number>(0)
 
     const fetchServiceAvailable = async () => {
+        setIsLoadingServices(true)
+        setServicesAvailable(undefined)
+
         const parameters = {
-            toType: 'IATA',
+            toType: 'ATLAS',
             fromType: 'IATA',
             adults: adultsNumber,
             infants: infantsNumber,
-            outbound: departureDate,
+            outbound: stringDateFormat(departureDate),
             children: childrenNumber,
-            toCode: toLocation?.countryCode,
-            fromCode: fromLocation?.countryCode,
-            ...(dropOffType === 'same' && { inbound: returnDate }),
+            toCode: hotelSelected?.value,
+            fromCode: airportSelected?.value,
+            ...(tripType.value === 'round' && { inbound: stringDateFormat(returnDate) }),
         }
 
         try {
             const response = await fetch('/api/search', {
                 method: 'POST',
                 body: JSON.stringify(parameters),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
             })
 
             if (!response.ok) {
@@ -95,11 +154,15 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
             setServicesAvailable(responseData)
         } catch (e) {
             console.log(e)
+        } finally {
+            setIsLoadingServices(false)
         }
     }
 
     const fetchInformation = async (path: string) => {
         try {
+            //setIsLoading(true)
+
             const response = await fetch(path);
 
             if (!response.ok) {
@@ -132,10 +195,19 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
                 }
             }
 
-            if (!countriesList) {
+            /*if (countriesList.length === 0) {
                 const response = await fetchInformation('/api/locations/countries');
 
                 setCountriesList(response);
+
+            }*/
+
+            if (!departureDate) {
+                setDepartureDate(currentDate)
+            }
+
+            if (!returnDate) {
+                setReturnDate(nextDay)
             }
 
             setIsLoading(false)
@@ -143,47 +215,90 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
     }, [])
 
     React.useEffect(() => {
-        if (currentUser !== undefined) {
-            if (!fromLocation) {
-                const { homeLocation } = currentUser as IUser
+        if (tripType.value === 'round') {
 
-                setFromLocation({
-                    city: homeLocation.city,
-                    country: homeLocation.country,
-                    countryCode: homeLocation.countryCode
+            const returnedDate = new Date(nextDay);
+            returnedDate.setDate(nextDay.getDate() + 1);
+
+            setReturnDate(returnedDate)
+        }
+    }, [tripType, departureDate])
+
+    React.useEffect(() => {
+        if (currentUser !== undefined) {
+            const { homeLocation } = currentUser as IUser
+
+            if (!countrySelected) {
+
+                setCountrySelected({
+                    label: homeLocation.country,
+                    value: homeLocation.countryCode
                 })
             }
         }
     }, [currentUser])
 
     React.useEffect(() => {
-        if (toLocation && fromLocation) {
-            setIsLoading(true)
+        (async () => {
+            setIsLoadingLocations(true)
 
-            fetchServiceAvailable().then(() => {
-                setIsLoading(false)
-            })
-        }
-    }, [returnDate, toLocation, fromLocation, departureDate])
+            setCitySelected(undefined)
+            setHotelSelected(undefined)
+            setAirportSelected(undefined)
 
+            if (countrySelected?.value !== '') {
+                const cities = await fetchInformation(`/api/locations/destinations?countryCode=${countrySelected?.value}`);
+                const airports = await fetchInformation(`/api/locations/airport-terminals?countryCode=${countrySelected?.value}`);
+
+                setCitiesByCountryList(cities);
+                setAirportTerminals(airports);
+            }
+
+            setIsLoadingLocations(false)
+        })()
+    }, [countrySelected])
+
+    React.useEffect(() => {
+        (async () => {
+            setIsLoadingHotels(true)
+
+            if (citySelected?.value !== '') {
+                const hotels = await fetchInformation(`/api/locations/hotels?countryCode=${countrySelected?.value}&cityCode=${citySelected?.value}`);
+
+                setHotelsByCityList(hotels);
+            }
+
+            setIsLoadingHotels(false)
+        })()
+    }, [citySelected])
+
+    const handleTripType = (type: IMenuOptions) => setTripType(type)
+    const handleCountrySelected = (country: IMenuOptions) => setCountrySelected(country)
+    const handleHotelSelected = (hotel: IMenuOptions) => setHotelSelected(hotel)
     const handleAdultsNumber = (number: number) => setAdultsNumber(number)
     const handleInfantsNumber = (number: number) => setInfantsNumber(number)
     const handleChildrenNumber = (number: number) => setChildrenNumber(number)
     const handleReturnDate = (date: Date) => setReturnDate(date)
     const handleDepartureDate = (date: Date) => setDepartureDate(date)
-    const handleToLocation = (location: ILocation) => setToLocation(location)
-    const handleFromLocation = (location: ILocation) => setFromLocation(location)
-    const handleDropOffType = (type: DropOffTypes) => setDropOffType(type)
+    const handleCitySelected = (cityCode: IMenuOptions) => setCitySelected(cityCode)
+    const handleAirportSelected = (airport: IMenuOptions) => setAirportSelected(airport)
 
     const memoizedValue = React.useMemo(() => {
         return {
             isLoading,
+            isLoadingHotels,
+            isLoadingLocations,
             currentUser,
-            countriesList,
-            fromLocation,
+            citySelected,
+            hotelSelected,
+            airportSelected,
             servicesAvailable,
+            hotelsByCityList,
+            citiesByCountryList,
+            airportTerminalList,
+
         };
-    }, [isLoading, currentUser, countriesList, fromLocation, servicesAvailable]);
+    }, [isLoading, isLoadingHotels, isLoadingLocations, currentUser, airportTerminalList, airportSelected, citySelected, hotelSelected, hotelsByCityList, citiesByCountryList, servicesAvailable]);
 
     return (
         <MyContext.Provider value={{
@@ -193,13 +308,19 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
             childrenNumber,
             returnDate,
             departureDate,
+            countrySelected,
+            tripType,
+            isLoadingServices,
+            fetchServiceAvailable,
             handleAdultsNumber,
             handleInfantsNumber,
             handleChildrenNumber,
-            handleToLocation,
+            handleTripType,
+            handleCitySelected,
+            handleHotelSelected,
+            handleCountrySelected,
+            handleAirportSelected,
             handleReturnDate,
-            handleDropOffType,
-            handleFromLocation,
             handleDepartureDate
         }}>
             {children}

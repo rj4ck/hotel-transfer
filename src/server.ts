@@ -13,6 +13,9 @@ const handle = nextApp.getRequestHandler();
 nextApp.prepare().then(() => {
     const app = express();
 
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
     app.use('/api', apiRoutes);
 
     app.get('*', (req, res) => {

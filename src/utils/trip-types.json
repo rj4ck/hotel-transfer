@@ -1,0 +1,10 @@
+[
+  {
+    "label": "Solo de ida",
+    "value": "outbound"
+  },
+  {
+    "label": "Ida y regreso",
+    "value": "round"
+  }
+]

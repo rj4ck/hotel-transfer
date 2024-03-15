@@ -3,64 +3,58 @@
 import React from 'react';
 import Dropdown from '@/app/components/Dropdown';
 import InputNumber from '@/app/components/InputNumber';
-
-interface GuestsObject {
-	guestAdults?: number;
-	guestChildren?: number;
-}
+import { useHotelTransfer } from "@/app/hooks/useTransfers";
 
 interface TitleProps {
-	totalGuests?:  number;
+	totalPassengers?: string;
 }
 
-const Title: React.FC<TitleProps> = ({ totalGuests = 0 }) => {
+const Title: React.FC<TitleProps> = ({ totalPassengers = 0 }) => {
 
 	return (
 		<React.Fragment>
-			<span className="filter-title">
-				{totalGuests ?? ''} Guests
+			<span className={'text-black dark:text-white font-bold'}>
+				Passengers
 			</span>
 
+			<br/>
+
 			<span className={'filter-description'}>
-				{totalGuests ? 'Guests' : 'Add guests'}
+				{`${totalPassengers}`}
 			</span>
 		</React.Fragment>
 	)
 }
-const GuestsInput = () => {
+const GuestsInput: React.FC = () => {
 
-	const [guestAdultsInputValue, setGuestAdultsInputValue] = React.useState(2);
-	const [guestChildrenInputValue, setGuestChildrenInputValue] = React.useState(1);
+	const {
+		adultsNumber,
+		infantsNumber,
+		childrenNumber,
+		handleAdultsNumber,
+		handleChildrenNumber,
+		handleInfantsNumber
+	} = useHotelTransfer()
 
-	const totalGuests = guestChildrenInputValue + guestAdultsInputValue;
+	const totalPassengers = `${adultsNumber} Adults, ${infantsNumber} Infants, ${childrenNumber} Children`
 
-	const handleChangeData = (value: number, type: keyof GuestsObject) => {
-		const newValue = {
-			guestAdults: guestAdultsInputValue,
-			guestChildren: guestChildrenInputValue,
-		};
-		if (type === 'guestAdults') {
-			setGuestAdultsInputValue(value);
-			newValue.guestAdults = value;
-		}
-		if (type === 'guestChildren') {
-			setGuestChildrenInputValue(value);
-			newValue.guestChildren = value;
-		}
-	};
-
-	return <Dropdown title={Title({ totalGuests })}>
+	return <Dropdown title={Title({ totalPassengers })}>
 		<InputNumber
 			min={1}
 			max={10}
 			label={'Adults'}
-			defaultValue={guestAdultsInputValue}
-			onChange={(value) => handleChangeData(value, 'guestAdults')}/>
+			defaultValue={adultsNumber}
+			onChange={(value) => handleAdultsNumber(value)}/>
+
+		<InputNumber
+			label={'Infants'}
+			defaultValue={infantsNumber}
+			onChange={(value) => handleInfantsNumber(value)}/>
 
 		<InputNumber
 			label={'Children'}
-			defaultValue={guestChildrenInputValue}
-			onChange={(value) => handleChangeData(value, 'guestChildren')}/>
+			defaultValue={childrenNumber}
+			onChange={(value) => handleChildrenNumber(value)}/>
 	</Dropdown>;
 };
 

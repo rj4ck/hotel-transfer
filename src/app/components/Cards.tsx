@@ -33,7 +33,6 @@ const Cards: React.FC<ICardProps> = ({ data }) => {
 				day: '2-digit',
 			}) : alterText;
 		} else {
-			// Si navigator no está definido, proporciona un valor predeterminado
 			return alterText;
 		}
 	}, []);
@@ -69,7 +68,6 @@ const Cards: React.FC<ICardProps> = ({ data }) => {
 
 					<div className="flex justify-between items-center">
 				<span className="text-base font-semibold">
-					{formatDate()}
 					<span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">/day</span>
 				</span>
 					</div>

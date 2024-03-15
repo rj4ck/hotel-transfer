@@ -5,12 +5,8 @@ class CurrentUserQuery {
 
         let address = publicAddress;
 
-        console.log({ address })
-
         if (publicAddress?.includes('localhost')) {
             const { ip } = await IpApiService.getPublicIp('') as { ip: string };
-
-            console.log({ ip })
 
             address = ip
         }
