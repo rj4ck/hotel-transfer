@@ -40,7 +40,8 @@ class TripsController {
                         code: flightReference
                     }]
                 }],
-                welcomeMessage: `Welcome ${firstName} ${lastName}`
+                welcomeMessage: `Welcome ${firstName} ${lastName}`,
+                clientReference: '343443'
             } as IConfirmBookingTransferRequest
 
             console.log({ payload })

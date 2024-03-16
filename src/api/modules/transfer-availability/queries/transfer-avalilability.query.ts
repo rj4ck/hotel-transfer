@@ -1,5 +1,5 @@
-import HotelBedsService from "../../../services/hotel-beds.service";
-import { IServiceAvailableRequest, IServiceAvailableResponse } from "../../../entities/services-availability.entity";
+import HotelBedsService from "../../../../services/hotel-beds.service";
+import { IServiceAvailableRequest, IServiceAvailableResponse } from "@/dto/transfer-availability.dto";
 
 class SearchAvailabilityQuery {
     public static async execute (parameters: IServiceAvailableRequest) {

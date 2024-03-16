@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import SearchAvailabilityQuery from "./queries/search-avalilability.query";
-import { IServiceAvailableRequest } from "@/entities/services-availability.entity";
+import { IServiceAvailableRequest } from "@/dto/transfer-availability.dto";
+import SearchAvailabilityQuery from "./queries/transfer-avalilability.query";
 
-class SearchAvailabilityController {
+class TransferAvailabilityController {
     public static async search(req: Request, res: Response, next: NextFunction): Promise<void> {
 
         try {
@@ -22,4 +22,4 @@ class SearchAvailabilityController {
     }
 }
 
-export default SearchAvailabilityController;
+export default TransferAvailabilityController;

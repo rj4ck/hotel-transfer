@@ -17,7 +17,7 @@ export interface IConfirmBookingTransferRequest {
     language: string;
     welcomeMessage: string;
     transfers: ITransfers[];
-    clientReference?: string;
+    clientReference: string;
 }
 
 interface IBookingData extends IBooking {
