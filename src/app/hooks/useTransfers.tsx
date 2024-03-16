@@ -1,11 +1,10 @@
 import React from "react";
 import { IUser } from "@/entities/users.entity";
-import tripTypesList from '@/utils/trip-types.json'
-import { DropOffTypes, IMenuOptions } from "@/entities";
-import { IAirportTerminals, ICities, IHotels } from "@/entities/locations.entity";
-import { IServicesAvailable } from "@/dto/services-available.dto";
+import tripTypesList from '@/jsonData/trip-types.json'
+import { IMenuOptions, ITransfers, IAirportTerminals, ICities, IHotels  } from "@/entities";
 import { getCookie, setCookie } from "@/utils/browser-cookie-manager";
 import { stringDateFormat } from "@/utils/formatter-date";
+import createApiClient from "@/utils/internal-request";
 
 interface HotelTransferProps {
     isLoading: boolean;
@@ -21,7 +20,7 @@ interface HotelTransferProps {
     airportSelected?: IMenuOptions;
 
     //toLocation?: string;
-    servicesAvailable?: IServicesAvailable[]
+    servicesAvailable?: ITransfers[]
 
     adultsNumber: number;
     infantsNumber: number;
@@ -116,67 +115,11 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
     const [returnDate, setReturnDate] = React.useState<Date>(nextDay)
     const [departureDate, setDepartureDate] = React.useState<Date>(nextDay)
 
-    const [servicesAvailable, setServicesAvailable] = React.useState<IServicesAvailable[]>()
+    const [servicesAvailable, setServicesAvailable] = React.useState<ITransfers[]>()
 
     const [adultsNumber, setAdultsNumber] = React.useState<number>(2)
     const [infantsNumber, setInfantsNumber] = React.useState<number>(0)
     const [childrenNumber, setChildrenNumber] = React.useState<number>(0)
-
-    const fetchServiceAvailable = async () => {
-        setIsLoadingServices(true)
-        setServicesAvailable(undefined)
-
-        const parameters = {
-            toType: 'ATLAS',
-            fromType: 'IATA',
-            adults: adultsNumber,
-            infants: infantsNumber,
-            outbound: stringDateFormat(departureDate),
-            children: childrenNumber,
-            toCode: hotelSelected?.value,
-            fromCode: airportSelected?.value,
-            ...(tripType.value === 'round' && { inbound: stringDateFormat(returnDate) }),
-        }
-
-        try {
-            const response = await fetch('/api/search', {
-                method: 'POST',
-                body: JSON.stringify(parameters),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-
-            if (!response.ok) {
-                throw new Error('Error al cargar la información del usuario');
-            }
-
-            const responseData = await response.json();
-
-            setServicesAvailable(responseData)
-        } catch (e) {
-            console.log(e)
-        } finally {
-            setIsLoadingServices(false)
-        }
-    }
-
-    const fetchInformation = async (path: string) => {
-        try {
-            //setIsLoading(true)
-
-            const response = await fetch(path);
-
-            if (!response.ok) {
-                throw new Error('Error al cargar la información del usuario');
-            }
-
-            return response.json();
-
-        } catch (error) {
-            console.error('Error al realizar la solicitud:', error);
-        }
-    }
 
     React.useEffect(() => {
 
@@ -188,21 +131,14 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
                 const storedUser = getCookie('current-user');
 
                 if (!storedUser) {
-                    const response = await fetchInformation('/api/trips/current-user');
+                    const data = await createApiClient('trips/current-user').get()
 
-                    setCurrentUser(response);
-                    setCookie('current-user', JSON.stringify(response));
+                    setCurrentUser(data);
+                    setCookie('current-user', JSON.stringify(data));
                 } else {
                     setCurrentUser(JSON.parse(storedUser));
                 }
             }
-
-            /*if (countriesList.length === 0) {
-                const response = await fetchInformation('/api/locations/countries');
-
-                setCountriesList(response);
-
-            }*/
 
             if (!departureDate) {
                 setDepartureDate(currentDate)
@@ -249,8 +185,8 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
             setAirportSelected(undefined)
 
             if (countrySelected?.value !== '') {
-                const cities = await fetchInformation(`/api/locations/destinations?countryCode=${countrySelected?.value}`);
-                const airports = await fetchInformation(`/api/locations/airport-terminals?countryCode=${countrySelected?.value}`);
+                const cities = await createApiClient(`locations/destinations?countryCode=${countrySelected?.value}`).get();
+                const airports = await createApiClient(`locations/airport-terminals?countryCode=${countrySelected?.value}`).get();
 
                 setCitiesByCountryList(cities);
                 setAirportTerminals(airports);
@@ -265,7 +201,7 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
             setIsLoadingHotels(true)
 
             if (citySelected?.value !== '') {
-                const hotels = await fetchInformation(`/api/locations/hotels?countryCode=${countrySelected?.value}&cityCode=${citySelected?.value}`);
+                const hotels = await createApiClient(`locations/hotels?countryCode=${countrySelected?.value}&cityCode=${citySelected?.value}`).get();
 
                 setHotelsByCityList(hotels);
             }
@@ -274,6 +210,30 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
         })()
     }, [citySelected])
 
+    const fetchServiceAvailable = async () => {
+        setIsLoadingServices(true)
+        setServicesAvailable(undefined)
+
+        const parameters = {
+            toType: 'ATLAS',
+            fromType: 'IATA',
+            adults: adultsNumber,
+            infants: infantsNumber,
+            outbound: stringDateFormat(departureDate),
+            children: childrenNumber,
+            toCode: hotelSelected?.value,
+            fromCode: airportSelected?.value,
+            ...(tripType.value === 'round' && { inbound: stringDateFormat(returnDate) }),
+        }
+
+        try {
+            const data = await createApiClient('transfers').post(parameters)
+
+            setServicesAvailable(data)
+        } finally {
+            setIsLoadingServices(false)
+        }
+    }
     const handleTripType = (type: IMenuOptions) => setTripType(type)
     const handleCountrySelected = (country: IMenuOptions) => setCountrySelected(country)
     const handleHotelSelected = (hotel: IMenuOptions) => setHotelSelected(hotel)
@@ -287,25 +247,11 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
 
     const handleConfirmBooking = async (payload: unknown) => {
         try {
-            const response = await fetch('/api/trips/booking', {
-                method: 'POST',
-                body: JSON.stringify(payload),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
+            const data = await createApiClient('trips/bookings').post(payload)
 
-            if (!response.ok) {
-                throw new Error('Error al realizar booking de transfer');
-            }
-
-            const responseData = await response.json();
-
-            console.log(responseData)
+            console.log(data)
 
             //setServicesAvailable(responseData)
-        } catch (e) {
-            console.log(e)
         } finally {
             setIsLoadingServices(false)
         }

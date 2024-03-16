@@ -1,8 +1,8 @@
 import React from 'react';
 import AutocompleteCombobox from "@/app/components/AutocompleteCombobox";
 import { useHotelTransfer } from "@/app/hooks/useTransfers";
-import countriesList from '@/utils/countries.json'
-import tripTypesList from '@/utils/trip-types.json'
+import countriesList from '@/jsonData/countries.json'
+import tripTypesList from '@/jsonData/trip-types.json'
 import GuestsInput from "@/app/components/SearchForm/GuestsInput";
 import SearchButton from "@/app/components/SearchForm/SearchButton";
 import DatePicker from "@/app/components/DatePickerInput";

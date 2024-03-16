@@ -19,11 +19,11 @@ nextApp.prepare().then(() => {
 
     app.use('/api', apiRoutes);
 
+    app.use(errorHandler);
+
     app.get('*', (req, res) => {
         return handle(req, res);
     });
-
-    app.use(errorHandler);
 
     app.listen(port, () => {
         console.log('[Server]: is running at http://%s:%d, in %s mode', hostname, port, env);
