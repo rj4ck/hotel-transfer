@@ -38,6 +38,11 @@ const createApiClient = (path: string) => {
 				body: JSON.stringify(data)
 			});
 		},
+		delete: async () => {
+			return await fetchApi({
+				method: 'DELETE'
+			});
+		},
 	};
 };
 

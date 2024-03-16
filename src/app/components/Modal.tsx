@@ -1,13 +1,15 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { ReactNode } from "react";
+import { isPageFile } from "next/dist/server/typescript/utils";
 
 interface IModalDialogProps {
     className: string;
     children: ReactNode;
-    submitButton: string;
     title: React.ReactNode | string;
+    buttonLabel?: React.ReactNode | string;
+    beforeOpen?: () => void;
 }
-const ModalDialog: React.FC<IModalDialogProps> = ({ title, children, className, submitButton }) => {
+const ModalDialog: React.FC<IModalDialogProps> = ({ title, children, className, buttonLabel, beforeOpen }) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
     function closeModal() {
@@ -21,7 +23,7 @@ const ModalDialog: React.FC<IModalDialogProps> = ({ title, children, className, 
     return (
         <>
             <button type="button" onClick={openModal} className={className}>
-                {title}
+                {buttonLabel ?? title}
             </button>
 
             <Transition appear show={isOpen} as={React.Fragment}>

@@ -1,5 +1,4 @@
 import { IHolder } from "@/entities/users.entity";
-import { ITransfers } from "@/entities/transfers.entity";
 
 type BookingStatuses = 'CONFIRMED' | 'CANCELLED' | 'MODIFIED';
 
@@ -12,6 +11,7 @@ export interface IBooking {
         cancellation: boolean;
         modification: boolean;
     },
+    holder: IHolder,
     clientReference: string,
     remark?: string;
     invoiceCompany: {

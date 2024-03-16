@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 const createApiClient = (domain: string, headers?: Record<string, unknown>) => {
 	const api = axios.create({
 		baseURL: domain,
-		timeout: 60000,
+		//timeout: 60000,
 		headers
 	});
 

@@ -4,9 +4,30 @@ import { useHotelTransfer } from "@/app/hooks/useTransfers";
 import VehicleList from "@/app/components/BookingTransfer/VehicleList";
 import LoadingMessage from "@/app/components/LoadingMessage";
 import SearchIcon from "@/app/components/Icons/SearchIcon";
+import ModalDialog from "@/app/components/Modal";
+import BookinDetails from "@/app/components/BookingTransfer/BookinDetails";
 
+const SearchButton = () => {
+    return (
+        <span className="absolute inset-y-0 end-0 grid w-10 place-content-center bg-orange-600">
+            <button type="button" className="text-white">
+                <SearchIcon/>
+            </button>
+        </span>
+    )
+}
 const RentCar = () => {
-    const { isLoadingServices, departureDate, servicesAvailable } = useHotelTransfer()
+    const [reference, setReference] = React.useState<string>('');
+
+    const { isLoadingServices, departureDate, servicesAvailable, handleSearchBooking } = useHotelTransfer();
+
+    const handleReferenceChange = (e: React.ChangeEvent<HTMLInputElement>) => setReference(e.target.value)
+    const handleSearchReference = () => {
+
+        if (reference) {
+            handleSearchBooking(reference)
+        }
+    }
 
     return <div className="main-container lg:col-span-2 bg-gray-200 p-8 divide-y-2 text-gray-400">
 
@@ -16,15 +37,13 @@ const RentCar = () => {
             <input
                 type="text"
                 id="Search"
+                onChange={handleReferenceChange}
                 placeholder="Search booking reference"
-                className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm"
+                className="w-full rounded-md border-gray-200 py-2.5 pe-10 shadow-sm sm:text-sm placeholder-gray-200 text-neutral-700"
             />
 
-            <span className="absolute inset-y-0 end-0 grid w-10 place-content-center bg-orange-600">
-                <button type="button" className="text-white">
-                    <SearchIcon />
-                </button>
-            </span>
+            <BookinDetails reference={reference} onClick={handleSearchReference} />
+
         </div>
 
         <h2 className={'text-4xl font-semibold'}>{`Available services`}</h2>

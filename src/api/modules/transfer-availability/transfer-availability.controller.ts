@@ -16,7 +16,6 @@ class TransferAvailabilityController {
             res.status(200).json(servicesAvailable);
 
         } catch (error) {
-            console.log(error)
             next(error);
         }
     }

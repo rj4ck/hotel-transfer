@@ -46,8 +46,6 @@ class TripsController {
                 clientReference: 'BOSTON#12-203#456754'
             } as IConfirmBookingTransferRequest
 
-            console.log({ payload })
-
             const confirmBooking = await ConfirmBookingCommand.execute(payload);
 
             res.status(200).json(confirmBooking);
@@ -60,7 +58,6 @@ class TripsController {
     public static async getBookingTransfer(req: Request, res: Response, next: NextFunction): Promise<void> {
 
         try {
-
             const { reference } = req.params;
 
             const bookingTransfer = await GetBookingQuery.execute(reference);
@@ -68,6 +65,12 @@ class TripsController {
             res.status(200).json(bookingTransfer);
 
         } catch (error) {
+            const errorData = error as Error;
+
+            if (!errorData?.message) {
+                return next(new Error('Booking not found'));
+            }
+
             next(error);
         }
     }

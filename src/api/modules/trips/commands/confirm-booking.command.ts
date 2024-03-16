@@ -7,8 +7,6 @@ class ConfirmBookingCommand {
 
         const response = await HotelBedsService.transfer.post(`/bookings`, parameters);
 
-        console.log(response)
-
         const { bookings } = response as unknown as IConfirmBookingTransferResponse
 
         return bookings[0]

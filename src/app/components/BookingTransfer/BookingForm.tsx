@@ -38,8 +38,7 @@ const initialValues = {
 const BookingForm: React.FC<IBookingForm> = ({ rateKey, direction, onSubmit, isLoading = false }) => {
 
     return (
-        <ModalDialog submitButton={'Submit'} title={'Booking'}
-                     className={'h-12 w-full rounded-md bg-orange-500 hover:bg-orange-700 flex items-center justify-center text-neutral-50 focus:outline-none'}>
+        <ModalDialog title={'Booking'} className={'h-12 w-full rounded-md bg-orange-500 hover:bg-orange-700 flex items-center justify-center text-neutral-50 focus:outline-none'}>
 
             {isLoading && <LoadingMessage message={'Booking transfer...'} /> }
 
@@ -47,7 +46,6 @@ const BookingForm: React.FC<IBookingForm> = ({ rateKey, direction, onSubmit, isL
                 initialValues={initialValues}
                 validationSchema={bookingSchema}
                 onSubmit={values => {
-                    // same shape as initial values
                     onSubmit({ ...values, rateKey, direction });
                 }}>
 
