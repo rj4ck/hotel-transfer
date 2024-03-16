@@ -1,0 +1,186 @@
+.popover-main {
+	@apply m-1
+	flex
+	flex-1
+	relative;
+
+	.popover-button-wrapper {
+		@apply
+		w-full
+		p-3
+		rounded-md
+		cursor-pointer
+		hover:rounded-md
+		hover:bg-black/20;
+
+		> * {
+
+		};
+
+		input {
+			@apply p-0
+			border-none
+			focus:ring-0
+			cursor-pointer
+			bg-transparent
+			focus:outline-none
+			focus:placeholder-neutral-100
+			dark:focus:placeholder-neutral-100
+
+			xl:text-lg
+
+			font-normal
+			placeholder-neutral-300
+			dark:placeholder-neutral-300
+			truncate
+		}
+
+		.popover-title {
+			@apply w-full;
+		}
+	}
+
+	.popover-panel-container {
+			@apply absolute
+		z-40
+		mt-5
+		w-max
+		p-3
+		shadow-md
+		rounded-md
+		bg-white
+		dark:bg-neutral-800
+		ring-1
+		ring-black/5
+		focus:outline-none;
+	}
+}
+
+.popover-wrapper {
+	@apply absolute
+	z-40
+	mt-5
+	p-3
+	w-56
+	shadow-md
+	rounded-md
+	bg-white
+	dark:bg-neutral-800
+	ring-1
+	ring-black/5
+	focus:outline-none;
+
+	.popover-item {
+		cursor: pointer;
+		@apply flex
+		w-full
+		items-center
+		rounded-md
+		px-2
+		py-2
+		text-sm
+		dark:text-white;
+	}
+
+	&.dropdown {
+		@apply absolute
+		z-40
+		mt-2 w-56
+		divide-y
+		divide-gray-100
+		rounded-md
+		bg-white
+		dark:bg-neutral-700
+		shadow-lg
+		ring-1
+		ring-black/5
+		focus:outline-none
+	}
+
+}
+
+.search-form-wrapper {
+	@apply w-full
+	z-40
+	h-1/5
+	mb-5
+	sticky top-0 left-0 right-0
+	shadow-2xl
+	bg-white
+	dark:bg-neutral-800;
+
+	form {
+		@apply w-full
+		relative
+		;
+
+		.drop-off-location {
+			@apply flex
+			p-3;
+
+			> div {
+				//@apply relative inline-block
+			}
+
+			button.dropdown {
+				@apply inline-flex
+				w-full
+				justify-center
+				rounded-md
+				dark:bg-white/20
+				bg-black/20
+				px-4
+				py-2
+				text-sm
+				font-medium
+				text-white
+				hover:bg-neutral-50
+				dark:hover:bg-white/30
+				focus:outline-none
+				focus-visible:ring-2
+				focus-visible:ring-white/75;
+
+				svg {
+					@apply h-5;
+				}
+			}
+
+			div.dropdown-options {
+				@apply absolute
+				z-40
+				mt-2 w-56
+				divide-y
+				divide-gray-100
+				rounded-md
+				bg-white
+				dark:bg-neutral-700
+				shadow-lg
+				ring-1
+				ring-black/5
+				focus:outline-none;
+
+				div > button {
+					@apply flex
+					w-full
+					items-center
+					rounded-md
+					px-2
+					py-2
+					text-sm
+					dark:text-white
+				}
+			}
+
+		};
+
+		.filters {
+			@apply w-full
+			items-center
+				flex
+				flex-1
+				p-2
+
+			;
+		}
+	}
+}

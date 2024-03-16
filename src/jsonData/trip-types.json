@@ -1,0 +1,10 @@
+[
+  {
+    "label": "One way",
+    "value": "outbound"
+  },
+  {
+    "label": "Round trip",
+    "value": "round"
+  }
+]

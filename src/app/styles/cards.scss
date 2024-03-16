@@ -1,0 +1,19 @@
+.cards {
+	@apply relative
+	border
+	bg-white
+	rounded-md
+	overflow-hidden
+	border-neutral-200
+	dark:bg-neutral-800
+	dark:border-neutral-700
+	hover:border-orange-500;
+
+	> div {
+		@apply p-5
+	}
+
+	:hover h2{
+		@apply text-orange-600;
+	}
+}
