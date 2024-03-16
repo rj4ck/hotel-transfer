@@ -1,14 +1,17 @@
 .cards {
 	@apply relative
 	border
-	border-neutral-200
-	dark:border-neutral-700
+	bg-white
 	rounded-md
 	overflow-hidden
-	bg-white
+	border-neutral-200
 	dark:bg-neutral-800
-	p-4
+	dark:border-neutral-700
 	hover:border-orange-500;
+
+	> div {
+		@apply p-5
+	}
 
 	:hover h2{
 		@apply text-orange-600;

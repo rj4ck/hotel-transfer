@@ -25,20 +25,16 @@ interface IDatePickerProp {
 	label: string,
 	onChange: (date: Date) => void
 }
+
 const DatePickerInput: React.FC<IDatePickerProp> = ({ date, label, onChange }) => {
+	const currentDate = new Date();
+	const minimumSelectableDate = new Date(currentDate);
+	minimumSelectableDate.setDate(currentDate.getDate() + 1);
 
 	return (
-		<>
-			<span className={'m-4 text-black dark:text-white font-bold'}>
-                    {label}
-                </span>
-
-			<br/>
-
-			<Dropdown title={<Title date={date}/>} className={'right-0'}>
-				<DatePicker selected={date} onChange={onChange} inline/>
-			</Dropdown>
-		</>
+		<Dropdown label={label} title={<Title date={date} />}>
+			<DatePicker selected={date} onChange={onChange} inline minDate={minimumSelectableDate}/>
+		</Dropdown>
 );
 };
 

@@ -61,9 +61,9 @@ const SearchForm = () => {
 
 		<DatePicker date={departureDate} label={'Arrival date'} onChange={handleDepartureDate} />
 
-		<GuestsInput />
-
 		{tripType.value === 'round' && <DatePicker date={returnDate} label={'Return date'} onChange={handleReturnDate} />}
+
+		<GuestsInput />
 
 		<AutocompleteCombobox label={'Country'} value={countrySelected} options={countriesOptions} placeholder={'Country'} onChange={handleCountrySelected} isLoading={isLoading} />
 

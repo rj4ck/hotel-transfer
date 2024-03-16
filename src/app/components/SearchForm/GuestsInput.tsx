@@ -6,23 +6,15 @@ import InputNumber from '@/app/components/InputNumber';
 import { useHotelTransfer } from "@/app/hooks/useTransfers";
 
 interface TitleProps {
-	totalPassengers?: string;
+	totalPassengers?: number;
 }
 
 const Title: React.FC<TitleProps> = ({ totalPassengers = 0 }) => {
 
 	return (
-		<React.Fragment>
-			<span className={'text-black dark:text-white font-bold'}>
-				Passengers
-			</span>
-
-			<br/>
-
-			<span className={'filter-description'}>
-				{`${totalPassengers}`}
-			</span>
-		</React.Fragment>
+		<span className={'filter-description text-right'}>
+			{`${totalPassengers}`}
+		</span>
 	)
 }
 const GuestsInput: React.FC = () => {
@@ -36,9 +28,9 @@ const GuestsInput: React.FC = () => {
 		handleInfantsNumber
 	} = useHotelTransfer()
 
-	const totalPassengers = `${adultsNumber} Adults, ${infantsNumber} Infants, ${childrenNumber} Children`
+	const totalPassengers = adultsNumber + infantsNumber + childrenNumber
 
-	return <Dropdown title={Title({ totalPassengers })}>
+	return <Dropdown label={'Passengers'} title={Title({ totalPassengers })}>
 		<InputNumber
 			min={1}
 			max={10}

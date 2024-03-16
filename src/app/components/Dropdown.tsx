@@ -5,15 +5,22 @@ import { Popover, Transition } from '@headlessui/react';
 import ArrowDownIcon from '@/app/components/Icons/ArrowIcon';
 
 interface DropdownProps {
+	label: string;
 	className?: string;
 	title: string | React.ReactNode
 	children: string | React.ReactNode
 
 }
-const Dropdown: React.FC<DropdownProps> = ({ title, children, className }) => {
+const Dropdown: React.FC<DropdownProps> = ({ title, label, children, className }) => {
 	return <Popover className={'popover-main'}>
 		{({ open }) => (
-			<div  className={'popover-button-wrapper'}>
+			<div className={'popover-button-wrapper'}>
+				<span className={'text-black dark:text-white font-bold'}>
+                    {label}
+                </span>
+
+				<br/>
+
 				<Popover.Button>
 					<div className={'filter-resume'}>
 						{title}
