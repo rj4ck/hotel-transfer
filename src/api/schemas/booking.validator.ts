@@ -10,6 +10,7 @@ export default yup.object({
         email: yup.string().email().required("email' is a required field."),
         flightReference: yup.string().required("flightReference' is a required field."),
         direction: yup.mixed<TransferDirections>().oneOf(['ARRIVAL', 'DEPARTURE']).required("direction' is a required field."),
-        transferType: yup.mixed<TransferType>().oneOf([ 'TRAIN', 'FLIGHT', 'CRUISE']).required("transferType' is a required field."),
+        //transferType: yup.mixed<TransferType>().oneOf([ 'TRAIN', 'FLIGHT', 'CRUISE']).required("transferType' is a required field."),
     })
 })
+

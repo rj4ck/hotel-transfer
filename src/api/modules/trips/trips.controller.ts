@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import CurrentUserQuery from './queries/current-user.query';
-import ConfirmBookingCommand from "./commands/confirm-booking.command";
 import { IConfirmBookingTransferRequest } from "@/dto";
+import GetBookingQuery from "./queries/get-booking.query";
+import CurrentUserQuery from './queries/current-user.query';
+import CancelBookingCommand from "./commands/cancel-booking.command";
+import ConfirmBookingCommand from "./commands/confirm-booking.command";
 
 class TripsController {
     public static async currentUser(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -36,12 +38,12 @@ class TripsController {
                     rateKey,
                     transferDetails: [{
                         direction,
-                        type: transferType,
+                        type: "FLIGHT",
                         code: flightReference
                     }]
                 }],
                 welcomeMessage: `Welcome ${firstName} ${lastName}`,
-                clientReference: '343443'
+                clientReference: 'BOSTON#12-203#456754'
             } as IConfirmBookingTransferRequest
 
             console.log({ payload })
@@ -51,7 +53,36 @@ class TripsController {
             res.status(200).json(confirmBooking);
 
         } catch (error) {
-            console.log(error)
+            next(error);
+        }
+    }
+
+    public static async getBookingTransfer(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {
+
+            const { reference } = req.params;
+
+            const bookingTransfer = await GetBookingQuery.execute(reference);
+
+            res.status(200).json(bookingTransfer);
+
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    public static async cancelBookingTransfer(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+        try {
+
+            const { reference } = req.params;
+
+            await CancelBookingCommand.execute(reference);
+
+            res.status(200).json({ message: 'Transfer cancel' });
+
+        } catch (error) {
             next(error);
         }
     }

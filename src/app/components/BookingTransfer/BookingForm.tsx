@@ -3,12 +3,14 @@ import * as Yup from 'yup';
 import { Formik, Form } from 'formik';
 import Input from "@/app/components/Input";
 import ModalDialog from "@/app/components/Modal";
+import LoadingMessage from "@/app/components/LoadingMessage";
 
 interface IBookingForm {
     rateKey: string;
     direction: string;
-    transferType: string;
-    onSubmit: (p: { [p: string]: unknown; rateKey: string; transferType: string; direction: string }) => void;
+    isLoading: boolean;
+    //transferType: string;
+    onSubmit: (p: { [p: string]: unknown; rateKey: string; direction: string }) => void;
 }
 
 const bookingSchema = Yup.object().shape({
@@ -30,22 +32,23 @@ const initialValues = {
     lastName: '',
     firstName: '',
     phoneNumber: '',
-    transferType: '',
     flightReference: '',
 
 }
-const BookingForm: React.FC<IBookingForm> = ({ rateKey, direction, transferType, onSubmit }) => {
+const BookingForm: React.FC<IBookingForm> = ({ rateKey, direction, onSubmit, isLoading = false }) => {
 
     return (
         <ModalDialog submitButton={'Submit'} title={'Booking'}
                      className={'h-12 w-full rounded-md bg-orange-500 hover:bg-orange-700 flex items-center justify-center text-neutral-50 focus:outline-none'}>
 
-            <Formik
+            {isLoading && <LoadingMessage message={'Booking transfer...'} /> }
+
+            {!isLoading && <Formik
                 initialValues={initialValues}
                 validationSchema={bookingSchema}
                 onSubmit={values => {
                     // same shape as initial values
-                    onSubmit({ ...values, rateKey, direction, transferType });
+                    onSubmit({ ...values, rateKey, direction });
                 }}>
 
                 {({ errors, touched }) => (
@@ -69,8 +72,7 @@ const BookingForm: React.FC<IBookingForm> = ({ rateKey, direction, transferType,
                         </div>
                     </Form>
                 )}
-
-            </Formik>
+            </Formik>}
 
         </ModalDialog>
 

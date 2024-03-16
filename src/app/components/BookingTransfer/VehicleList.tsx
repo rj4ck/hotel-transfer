@@ -1,5 +1,5 @@
 import React from "react";
-import { IServicesAvailable } from "@/dto/services-available.dto";
+import { ITransfers } from "@/entities";
 import BookingForm from "@/app/components/BookingTransfer/BookingForm";
 import { useHotelTransfer } from "@/app/hooks/useTransfers";
 
@@ -17,9 +17,9 @@ const PriceAmount: React.FC<IPriceAmountProp> = ({ amount, currencyCode }) => {
 
     return <dd className="text-sm text-gray-500">{priceFormat}</dd>
 }
-const Vehicle: React.FC<IServicesAvailable> = ({ price, direction, rateKey, category, vehicle, content, transferType, minPaxCapacity, maxPaxCapacity  }) => {
+const Vehicle: React.FC<ITransfers> = ({ price, direction, rateKey, category, vehicle, content, transferType, minPaxCapacity, maxPaxCapacity  }) => {
 
-    const { handleConfirmBooking } = useHotelTransfer()
+    const { isLoadingBooking, handleConfirmBooking } = useHotelTransfer()
 
     return (
         <div className="cards">
@@ -63,7 +63,7 @@ const Vehicle: React.FC<IServicesAvailable> = ({ price, direction, rateKey, cate
 
                 </div>
 
-                <BookingForm direction={direction} transferType={transferType} rateKey={rateKey} onSubmit={handleConfirmBooking} />
+                <BookingForm isLoading={isLoadingBooking} direction={direction} rateKey={rateKey} onSubmit={handleConfirmBooking} />
             </div>
         </div>
     )
