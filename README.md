@@ -5,6 +5,7 @@ Este proyecto ha sido desarrollado como parte del desafío de codificación para
 ```bash
 touch .env
 ```
+> Copiar o renombrar el archivo *.env.example*, en él se encuentran los nombres de las variables requeridas.
 
 ### Instalar las dependencias
 ```bash
