@@ -2,10 +2,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { ReactNode } from "react";
 
 interface IModalDialogProps {
-    title: React.ReactNode | string
-    children: ReactNode
+    className: string;
+    children: ReactNode;
+    submitButton: string;
+    title: React.ReactNode | string;
 }
-const ModalDialog: React.FC<IModalDialogProps> = ({ title, children }) => {
+const ModalDialog: React.FC<IModalDialogProps> = ({ title, children, className, submitButton }) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false)
 
     function closeModal() {
@@ -18,16 +20,14 @@ const ModalDialog: React.FC<IModalDialogProps> = ({ title, children }) => {
 
     return (
         <>
-            <button
-                type="button"
-                onClick={openModal}
-                className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
-            >
+            <button type="button" onClick={openModal} className={className}>
                 {title}
             </button>
 
             <Transition appear show={isOpen} as={React.Fragment}>
                 <Dialog as="div" className="relative z-40" onClose={closeModal}>
+                    <div className="fixed inset-0 bg-black/30" aria-hidden="true"/>
+
                     <Transition.Child
                         as={React.Fragment}
                         enter="ease-out duration-300"
@@ -37,7 +37,7 @@ const ModalDialog: React.FC<IModalDialogProps> = ({ title, children }) => {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black/25" />
+                        <div className="fixed inset-0 bg-black/25"/>
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -51,26 +51,19 @@ const ModalDialog: React.FC<IModalDialogProps> = ({ title, children }) => {
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 text-left align-middle shadow-xl transition-all">
-                                    <Dialog.Title
-                                        as="h3"
-                                        className="text-lg font-medium leading-6 text-gray-900"
-                                    >
-                                        Payment successful
-                                    </Dialog.Title>
+                                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                                    <Dialog.Panel
+                                        className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-neutral-800 p-6 text-left align-middle shadow-xl transition-all">
+                                        <Dialog.Title as="h3" className="mb-4 text-lg font-medium leading-6 text-black dark:text-white">
+                                            {title}
+                                        </Dialog.Title>
 
-                                    {children}
+                                        <div className={'border-b border-neutral-700'}/>
 
-                                    <div className="mt-4">
-                                        <button
-                                            type="button"
-                                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                                            onClick={closeModal}
-                                        >
-                                            Got it, thanks!
-                                        </button>
-                                    </div>
-                                </Dialog.Panel>
+                                        {children}
+
+                                    </Dialog.Panel>
+                                </div>
                             </Transition.Child>
                         </div>
                     </div>

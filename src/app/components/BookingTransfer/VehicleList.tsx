@@ -1,5 +1,7 @@
 import React from "react";
 import { IServicesAvailable } from "@/dto/services-available.dtos";
+import BookingForm from "@/app/components/BookingTransfer/BookingForm";
+import { useHotelTransfer } from "@/app/hooks/useTransfers";
 
 interface IPriceAmountProp {
     amount: number;
@@ -15,7 +17,9 @@ const PriceAmount: React.FC<IPriceAmountProp> = ({ amount, currencyCode }) => {
 
     return <dd className="text-sm text-gray-500">{priceFormat}</dd>
 }
-const Vehicle: React.FC<IServicesAvailable> = ({ price, category, vehicle, content, transferType, minPaxCapacity, maxPaxCapacity  }) => {
+const Vehicle: React.FC<IServicesAvailable> = ({ price, direction, rateKey, category, vehicle, content, transferType, minPaxCapacity, maxPaxCapacity  }) => {
+
+    const { handleConfirmBooking } = useHotelTransfer()
 
     return (
         <div className="cards">
@@ -28,21 +32,20 @@ const Vehicle: React.FC<IServicesAvailable> = ({ price, category, vehicle, conte
             <div>
                 <dl>
                     <div>
-                        <dt className="sr-only">Price</dt>
-                        <PriceAmount amount={price.totalAmount} currencyCode={price.currencyId}/>
+                        <dt className="sr-only">Categories</dt>
 
+                        <dd className="font-medium">{`${vehicle.name} - ${category.name}`}</dd>
                     </div>
 
                     <div>
-                        <dt className="sr-only">Address</dt>
-
-                        <dd className="font-medium">{`${vehicle.name} - ${category.name}`}</dd>
+                        <dt className="sr-only">Price</dt>
+                        <PriceAmount amount={price.totalAmount} currencyCode={price.currencyId}/>
                     </div>
                 </dl>
 
                 <div className="mt-6 flex items-center gap-8 text-xs mb-5">
                     <div className="sm:inline-flex sm:shrink-0 sm:items-center sm:gap-2">
-                        <div className="mt-1.5 sm:mt-0">
+                    <div className="mt-1.5 sm:mt-0">
                             <p className="text-gray-500">Type</p>
 
                             <p className="font-medium">{transferType}</p>
@@ -60,11 +63,7 @@ const Vehicle: React.FC<IServicesAvailable> = ({ price, category, vehicle, conte
 
                 </div>
 
-                <div>
-                    <button
-                        className={'h-12 w-full rounded-md bg-orange-500 hover:bg-orange-700 flex items-center justify-center text-neutral-50 focus:outline-none'}>Booking
-                    </button>
-                </div>
+                <BookingForm direction={direction} transferType={transferType} rateKey={rateKey} onSubmit={handleConfirmBooking} />
             </div>
         </div>
     )

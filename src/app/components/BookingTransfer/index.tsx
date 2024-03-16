@@ -1,7 +1,7 @@
 import React from "react";
 import formatDate from '@/utils/formatter-date'
 import { useHotelTransfer } from "@/app/hooks/useTransfers";
-import VehicleList from "@/app/components/RentCar/VehicleList";
+import VehicleList from "@/app/components/BookingTransfer/VehicleList";
 import LoadingMessage from "@/app/components/LoadingMessage";
 
 const RentCar = () => {
@@ -21,7 +21,7 @@ const RentCar = () => {
             Services no available
         </div>}
 
-        {!isLoadingServices && servicesAvailable?.length > 0 && <div className="grid grid-cols-3 gap-6 md:gap-8">
+        {!isLoadingServices && servicesAvailable && servicesAvailable?.length > 0 && <div className="grid grid-cols-3 gap-6 md:gap-8">
             {servicesAvailable && servicesAvailable?.map((service) => (
                 <VehicleList key={service.id} {...service} />
             ))}

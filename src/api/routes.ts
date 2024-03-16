@@ -5,7 +5,6 @@ import searchAvailability from './search-availability/search-availability.routes
 
 const api = express();
 
-//app.use('/hotels', hotelsRoutes);
 api.use('/trips', tripsRoutes);
 api.use('/search', searchAvailability);
 api.use('/locations', locationsRoutes);

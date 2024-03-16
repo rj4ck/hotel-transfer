@@ -3,6 +3,7 @@ import { IVehicleImages } from "@/dto/vehicles.dtos";
 export interface IServicesAvailable {
     id: string;
     rateKey: string;
+    direction: string;
     transferType: string;
     vehicle: {
         name: string;

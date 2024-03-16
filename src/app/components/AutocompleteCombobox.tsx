@@ -1,8 +1,8 @@
-import { Combobox } from "@headlessui/react";
-import ArrowDownIcon from "@/app/components/Icons/ArrowIcon";
-import Transition from "@/app/components/Transition";
 import React from "react";
 import { IMenuOptions } from "@/entities";
+import { Combobox } from "@headlessui/react";
+import Transition from "@/app/components/Transition";
+import ArrowDownIcon from "@/app/components/Icons/ArrowIcon";
 import LoadingMessage from "@/app/components/LoadingMessage";
 
 interface AutocompleteComboboxProp {
@@ -11,7 +11,7 @@ interface AutocompleteComboboxProp {
     placeholder: string;
     value?: IMenuOptions;
     options: IMenuOptions[];
-    onChange: (selected: IMenuOptions | string) => void;
+    onChange: (selected: IMenuOptions) => void;
 }
 
 const AutocompleteCombobox: React.FC<AutocompleteComboboxProp> = ({ value, label, isLoading, placeholder, options, onChange }) => {
@@ -41,7 +41,7 @@ const AutocompleteCombobox: React.FC<AutocompleteComboboxProp> = ({ value, label
                 {!isLoading && <Combobox.Button>
                     <div>
 						<span className={'text-black dark:text-white font-thin'}>
-							<Combobox.Input placeholder={placeholder} displayValue={({ label }) => label } onChange={(event) => setQuery(event.target.value)}/>
+							<Combobox.Input placeholder={placeholder} displayValue={({ label = '' }) => label } onChange={(event) => setQuery(event.target.value)}/>
 						</span>
                     </div>
 

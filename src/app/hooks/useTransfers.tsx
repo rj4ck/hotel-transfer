@@ -47,6 +47,7 @@ interface HotelTransferProps {
     handleInfantsNumber: (number: number) => void;
     handleChildrenNumber: (number: number) => void;
     fetchServiceAvailable: () => void;
+    handleConfirmBooking: (payload: unknown) => void;
 }
 
 interface HotelTransferProviderProps {
@@ -85,7 +86,8 @@ const MyContext = React.createContext<HotelTransferProps>({
     handleAdultsNumber: () => {},
     handleInfantsNumber: () => {},
     handleChildrenNumber: () => {},
-    fetchServiceAvailable: () => {}
+    fetchServiceAvailable: () => {},
+    handleConfirmBooking: () => {}
 });
 
 const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children }) => {
@@ -283,6 +285,32 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
     const handleCitySelected = (cityCode: IMenuOptions) => setCitySelected(cityCode)
     const handleAirportSelected = (airport: IMenuOptions) => setAirportSelected(airport)
 
+    const handleConfirmBooking = async (payload: unknown) => {
+        try {
+            const response = await fetch('/api/trips/booking', {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+
+            if (!response.ok) {
+                throw new Error('Error al realizar booking de transfer');
+            }
+
+            const responseData = await response.json();
+
+            console.log(responseData)
+
+            //setServicesAvailable(responseData)
+        } catch (e) {
+            console.log(e)
+        } finally {
+            setIsLoadingServices(false)
+        }
+    }
+
     const memoizedValue = React.useMemo(() => {
         return {
             isLoading,
@@ -321,7 +349,8 @@ const HotelTransferProvider: React.FC<HotelTransferProviderProps> = ({ children 
             handleCountrySelected,
             handleAirportSelected,
             handleReturnDate,
-            handleDepartureDate
+            handleDepartureDate,
+            handleConfirmBooking
         }}>
             {children}
         </MyContext.Provider>

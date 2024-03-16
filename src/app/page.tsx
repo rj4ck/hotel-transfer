@@ -2,7 +2,7 @@
 
 import React from 'react';
 import SearchForm from '@/app/components/SearchForm'
-import RentCar from "@/app/components/RentCar";
+import BookingTransfer from "src/app/components/BookingTransfer";
 import HotelTransferProvider from "@/app/hooks/useTransfers";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
 			<HotelTransferProvider>
 				<SearchForm />
 
-				<RentCar />
+				<BookingTransfer />
 			</HotelTransferProvider>
 		</main>
 );

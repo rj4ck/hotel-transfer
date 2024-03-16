@@ -1,10 +1,10 @@
 [
   {
-    "label": "Solo de ida",
+    "label": "One way",
     "value": "outbound"
   },
   {
-    "label": "Ida y regreso",
+    "label": "Round trip",
     "value": "round"
   }
 ]
