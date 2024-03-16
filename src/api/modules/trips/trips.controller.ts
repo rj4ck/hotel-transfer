@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import CurrentUserQuery from './queries/current-user.query';
 import ConfirmBookingCommand from "./commands/confirm-booking.command";
+import { IConfirmBookingTransferRequest } from "@/dto";
 
 class TripsController {
     public static async currentUser(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -40,7 +41,7 @@ class TripsController {
                     }]
                 }],
                 welcomeMessage: `Welcome ${firstName} ${lastName}`
-            }
+            } as IConfirmBookingTransferRequest
 
             console.log({ payload })
 

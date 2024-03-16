@@ -31,7 +31,7 @@ class LocationsController {
 
             const payload = {
                 fields: 'ALL',
-                language: 'es'
+                language: 'en'
             }
 
             const countries = await ListDestinationsQuery.execute(payload);

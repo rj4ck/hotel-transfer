@@ -1,4 +1,4 @@
-import IpApiService from "../../../services/ip-api.service";
+import IpApiService from "../../../../services/ip-api.service";
 
 class CurrentUserQuery {
     public static async execute (publicAddress: undefined | string) {
