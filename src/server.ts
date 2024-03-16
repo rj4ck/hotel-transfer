@@ -1,8 +1,9 @@
 import next from 'next';
 import express from 'express'
 
-import apiRoutes from './api/routes';
 import { baseConfig } from './configs';
+import apiRoutes from './api/modules/routes';
+import errorHandler from "./api/middlewares/error-handler";
 
 const { env, port, hostname } = baseConfig;
 
@@ -21,6 +22,8 @@ nextApp.prepare().then(() => {
     app.get('*', (req, res) => {
         return handle(req, res);
     });
+
+    app.use(errorHandler);
 
     app.listen(port, () => {
         console.log('[Server]: is running at http://%s:%d, in %s mode', hostname, port, env);

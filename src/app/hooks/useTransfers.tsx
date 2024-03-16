@@ -1,9 +1,9 @@
 import React from "react";
-import { IUser } from "@/dto/user.dtos";
+import { IUser } from "@/entities/users.entity";
 import tripTypesList from '@/utils/trip-types.json'
 import { DropOffTypes, IMenuOptions } from "@/entities";
-import { IAirportTerminals, ICities, IHotels } from "@/dto/locations.dtos";
-import { IServicesAvailable } from "@/dto/services-available.dtos";
+import { IAirportTerminals, ICities, IHotels } from "@/entities/locations.entity";
+import { IServicesAvailable } from "@/dto/services-available.dto";
 import { getCookie, setCookie } from "@/utils/browser-cookie-manager";
 import { stringDateFormat } from "@/utils/formatter-date";
 

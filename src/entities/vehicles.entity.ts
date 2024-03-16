@@ -6,5 +6,9 @@ export interface IVehicleImages {
 export interface IVehicles {
     code: string;
     name: string;
-    images: IVehicleImages[]
+}
+
+export interface ICategories {
+    code: string;
+    name: string;
 }

@@ -1,20 +1,30 @@
-import { LocationsTypes } from "@/dto/locations.dtos";
-import { IServicesAvailable } from "@/dto/services-available.dtos";
+import {
+    IPaxes,
+    ILocation,
+    ITransfers,
+    LocationsTypes,
+    IPickupInformation
+} from "@/entities";
 
 interface IDateFormat {
     date: string;
     time: string;
 }
 
+interface IServiceAvailableData extends ITransfers {
+    paxes?: IPaxes[];
+    pickupInformation?: IPickupInformation;
+}
+
 export interface IServiceAvailableRequest {
-    outbound: string;
-    inbound?: string;
     adults: number;
     toCode: string;
     infants: number;
     children: number;
     language: string;
     fromCode: string;
+    outbound: string;
+    inbound?: string;
     toType: LocationsTypes;
     fromType: LocationsTypes;
 }
@@ -29,16 +39,8 @@ export interface IServiceAvailableResponse {
             infants: number;
             children: number;
         },
-        from: {
-            code: string;
-            type: string;
-            description: string;
-        },
-        to: {
-            code: string;
-            type: string;
-            description: string;
-        }
+        to: ILocation
+        from: ILocation,
     };
-    services: IServicesAvailable[]
+    services: IServiceAvailableData[]
 }

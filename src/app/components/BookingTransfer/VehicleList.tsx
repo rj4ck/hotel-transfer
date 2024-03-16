@@ -1,5 +1,5 @@
 import React from "react";
-import { IServicesAvailable } from "@/dto/services-available.dtos";
+import { IServicesAvailable } from "@/dto/services-available.dto";
 import BookingForm from "@/app/components/BookingTransfer/BookingForm";
 import { useHotelTransfer } from "@/app/hooks/useTransfers";
 

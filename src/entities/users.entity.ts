@@ -1,4 +1,11 @@
-export interface IUser {
+export interface IHolder {
+    name: string;
+    email: string;
+    phone: string;
+    surname: string;
+}
+
+export interface IUser  {
     homeLocation: {
         lat: number,
         lon: number,
@@ -6,11 +13,4 @@ export interface IUser {
         country: string,
         countryCode: string
     }
-}
-
-export interface ITerminals {
-    name: string;
-    code: string;
-    language: string;
-    countryCode: string;
 }

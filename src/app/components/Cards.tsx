@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image'
-import { IServicesAvailable } from "@/dto/services-available.dtos";
+import { IServicesAvailable } from "@/dto/services-available.dto";
 
 interface ICardProps {
 	data: IServicesAvailable

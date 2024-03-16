@@ -27,10 +27,6 @@ const createApiClient = (domain: string, headers?: Record<string, unknown>) => {
 				const responseData: unknown = axiosError.response?.data;
 
 				return Promise.reject(responseData);
-			} else if (error.request) {
-				console.error('No se recibió respuesta del servidor:', error.request);
-			} else {
-				console.error('Error al realizar la solicitud:', error.message);
 			}
 
 			return Promise.reject(error);
