@@ -1,4 +1,4 @@
-## TRAVELANDZ - Desafio 
+## Desafio 
 Este proyecto ha sido desarrollado como parte del desafío de codificación para la solicitud del puesto de **Fullstack Developer** en **Travelandz**.
 
 ### Crear *.env*
